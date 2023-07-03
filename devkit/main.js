@@ -20,19 +20,19 @@ function convertObjectToDom(obj){
         return compHtml
     }else{return}
 }
-function getParent(o){
-    if(o.nodes != undefined){
-         for(n in o.nodes){
-             o.nodes[n].parent = o;
-             getParent(o.nodes[n]);
-         }
-    }
+function genChildren(parent){
+    var children =[]
+    //console.log(parent)
+    parent.children.forEach(obj =>{
+        if(!(obj.children=={})){
+            children.push(convertObjectToDom(obj).replace('${__children}',genChildren(obj)))
+        }else{
+            children.push(convertObjectToDom(obj).replace('${__children}',''))
+        }
+    })
+    return children.join('')
 }
-document.getElementById('__main').innerHTML =convertObjectToDom(root)
+document.getElementById('__main').innerHTML =convertObjectToDom(root).replace('${__children}',genChildren(root))
 var docRoot = document.getElementById(root.id)
-for(var counter=0;root.children.length>counter;counter++){
-    let comp = document.createRange().createContextualFragment(convertObjectToDom(root.children[counter]))
-    console.log(root.children.parentNode);
-    //console.log(parentNode)
-}
+//console.log(genChildren(root))
 console.log(document.getElementsByTagName('html')[0].outerHTML)

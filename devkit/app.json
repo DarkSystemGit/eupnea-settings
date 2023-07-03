@@ -4,10 +4,29 @@
         "type":"root",
         "children":[
             {
-                "type":"text",
-                "text":"hello world",
-                "parent":"root",
-                "children":[]
+                "type":"container",
+                "children":[
+                    {
+                        "type":"text",
+                        "text":"hello world",
+                        "children":[]
+                    },
+                    {
+                        "type":"text",
+                        "text":"bye world",
+                        "children":[]
+                    },
+                    {
+                        "type":"container",
+                        "children":[
+                            {
+                                "type":"text",
+                                "text":"in a another world",
+                                "children":[]
+                            }
+                        ]
+                    }
+                ]
             }
         ]
     }
