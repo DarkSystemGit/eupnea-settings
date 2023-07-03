@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/darksystemgit/eupneaSettings/issues"
   },
-  "homepage": "https://github.com/darksystemgit/eupneaSettings"
+  "homepage": "https://github.com/darksystemgit/eupneaSettings",
+  "dependencies": {
+    "jsdom": "^22.1.0"
+  }
 }

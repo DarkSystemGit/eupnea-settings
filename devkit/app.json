@@ -1,0 +1,14 @@
+{
+    "root":{
+        "id":"root",
+        "type":"root",
+        "children":[
+            {
+                "type":"text",
+                "text":"hello world",
+                "parent":"root",
+                "children":[]
+            }
+        ]
+    }
+}
