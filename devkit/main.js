@@ -1,14 +1,23 @@
 const fs = require('fs')
 const path = require('path')
-const jsdom = require("jsdom");
+const jsdom = require('jsdom');
+const xml = require('xml2js')
 const { JSDOM } = jsdom;
 var dom = new JSDOM('<!DOCTYPE html><html><head id="head"></head><body id="__main"></body></html>')
 const document = dom.window.document
 var appFile= JSON.parse(fs.readFileSync(path.join(__dirname,'app.json')).toString())
 var componentList =  fs.readdirSync(path.join(__dirname,'/components'))
 var root = appFile.root
-
 var app ={}
+var xmlstr = fs.readFileSync(path.join(__dirname,'app.xml'))
+xml.parseString(xmlstr, function (err, result) {
+    // $: properties of element, _: value of element
+    result=JSON.stringify(result)
+    console.log(result)
+});
+function convertXmltoObj(name,obj){
+
+}
 function convertObjectToDom(obj){
     if(componentList.includes(`${obj.type}.html`)){
         var compHtml = fs.readFileSync(path.join(__dirname,'/components/',`${obj.type}.html`)).toString()
