@@ -8,21 +8,26 @@
                 "children":[
                     {
                         "type":"text",
-                        "text":"hello world",
-                        "children":[]
+                        "text":"hello world"
                     },
                     {
                         "type":"text",
-                        "text":"bye world",
-                        "children":[]
+                        "text":"bye world"
                     },
                     {
                         "type":"container",
                         "children":[
                             {
                                 "type":"text",
-                                "text":"in a another world",
-                                "children":[]
+                                "text":"in a another world"
+                                
+                            },
+                            {
+                                "type":"html",
+                                "tag":"p",
+                                "attr":"",
+                                "value":"word"
+                                
                             }
                         ]
                     }

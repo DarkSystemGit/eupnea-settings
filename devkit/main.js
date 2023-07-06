@@ -1,7 +1,6 @@
 const fs = require('fs')
 const path = require('path')
 const jsdom = require('jsdom');
-const xml = require('xml2js')
 const { JSDOM } = jsdom;
 var dom = new JSDOM('<!DOCTYPE html><html><head id="head"></head><body id="__main"></body></html>')
 const document = dom.window.document
@@ -9,12 +8,8 @@ var appFile= JSON.parse(fs.readFileSync(path.join(__dirname,'app.json')).toStrin
 var componentList =  fs.readdirSync(path.join(__dirname,'/components'))
 var root = appFile.root
 var app ={}
-var xmlstr = fs.readFileSync(path.join(__dirname,'app.xml'))
-xml.parseString(xmlstr, function (err, result) {
-    // $: properties of element, _: value of element
-    result=JSON.stringify(result)
-    console.log(result)
-});
+var xml = new JSDOM(fs.readFileSync(path.join(__dirname,'app.xml')))
+console.log(xml.window.document.getElementsByTagName('root'))
 function convertXmltoObj(name,obj){
 
 }
@@ -32,6 +27,9 @@ function convertObjectToDom(obj){
 function genChildren(parent){
     var children =[]
     //console.log(parent)
+    if(!parent.hasOwnProperty('children')){
+        return ''
+    }
     parent.children.forEach(obj =>{
         if(!(obj.children=={})){
             children.push(convertObjectToDom(obj).replace('${__children}',genChildren(obj)))
