@@ -4,7 +4,7 @@
         "type":"root",
         "children":[
             {
-                "type":"container",
+                "type":"settingsPage",
                 "children":[
                     {
                         "type":"text",

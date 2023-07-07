@@ -42,4 +42,4 @@ function genChildren(parent){
 document.getElementById('__main').innerHTML =convertObjectToDom(root).replace('${__children}',genChildren(root))
 var docRoot = document.getElementById(root.id)
 //console.log(genChildren(root))
-console.log(document.getElementsByTagName('html')[0].outerHTML)
+fs.writeFileSync(path.join(__dirname,'page.html'),document.getElementsByTagName('html')[0].outerHTML)
