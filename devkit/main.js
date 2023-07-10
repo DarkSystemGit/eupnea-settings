@@ -32,6 +32,49 @@ function convertObjectToDom(obj){
         return compHtml
     }else{return}
 }
+function resolveDependencies(htmlString){
+    //console.log(htmlString)
+    if(htmlString.includes('$[__dependencies:')){
+        var html = {}
+        var retHtml =''
+        try{
+        var dependencies = htmlString.split('$[__dependencies:')[1]
+        dependencies =dependencies.split(']',1)[0].split(';')
+        dependencies.forEach((dependency)=>{
+            //console.log(dependencies)
+            var obj = JSON.parse(dependency)
+            html[obj.name]=convertObjectToDom(obj)
+
+        })
+        //console.log(Object.keys(html).length)
+        
+        Object.keys(html).forEach((dep,index)=>{
+            
+            if (retHtml==''){
+                retHtml = htmlString
+            }
+            var dom = new JSDOM(`<!DOCTYPE html><html>${retHtml.replaceAll(`$[__dependencies:${htmlString.split('$[__dependencies:')[1].split(']',1)[0]}]`,'')}</html>`)
+            console.log(dom.window.document.getElementsByTagName(dep).length)
+            for(var counter=0;counter<dom.window.document.getElementsByTagName(dep).length+1;counter++){
+                var depChilren = dom.window.document.getElementsByTagName(dep)[counter].innerHTML
+                //console.log("child: "+html[dep].replaceAll('${__children}',depChilren))
+                var parent = dom.window.document.getElementsByTagName(dep)[counter].parentNode
+                //console.log(dom.window.document.getElementsByTagName(dep)[counter].outerHTML)
+                //console.log("parent: "+parent.innerHTML)
+                parent.replaceChild(document.createRange().createContextualFragment(html[dep].replaceAll('${__children}',depChilren)),dom.window.document.getElementsByTagName(dep)[counter])
+                //console.log("parent: "+parent.innerHTML)
+            }
+            //console.log(count)
+            console.log(dom.window.document.getElementsByTagName('html')[0].innerHTML)
+        })
+        }catch(e){
+            console.log(e)
+            return htmlString
+        }
+    }
+
+    return htmlString;
+}
 function genChildren(parent){
     var children =[]
     //console.log(parent)
@@ -45,7 +88,7 @@ function genChildren(parent){
             children.push(convertObjectToDom(obj).replace('${__children}',''))
         }
     })
-    return children.join('')
+    return resolveDependencies(children.join(''))
 }
 document.getElementById('__main').innerHTML =convertObjectToDom(root).replace('${__children}',genChildren(root))
 var docRoot = document.getElementById(root.id)
