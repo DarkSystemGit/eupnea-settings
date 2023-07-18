@@ -107,7 +107,19 @@ background-color: white;
         <input class="uk-search-input search-input" type="search" placeholder="" aria-label="" style="width: 30vw;border-radius: 30px;background-color: white;position: sticky;bottom: 2vh;">
     </form>
 </div>
-<div style="left: 15vw;position: absolute;margin-top: 6vh;width: 85vw;height: 94vh;z-index:-1;"><p>hello world</p><p>bye world</p><div><p>in a another world</p><p>word</p></div></div>
+<div style="left: 15vw;position: absolute;margin-top: 6vh;width: 85vw;height: 94vh;z-index:-1;"><div id="pageImport"></div>
+<script>
+    (async () => {
+        async function betterFetch(src) {
+            var file = await fetch(src)
+            var res = await file.text()
+            return res
+        }
+        var src = "https://www.bing.com"
+        var page = await betterFetch(src)
+        document.getElementById('pageImport').innerHTML = page
+    })()
+</script></div>
 <div class="settings-container" style="max-width: 15vw;margin-left: 0;margin: 0;padding-right: 0;position: fixed;">
     
 
