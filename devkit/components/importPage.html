@@ -6,7 +6,7 @@
             var res = await file.text()
             return res
         }
-        var src = "${src}"
+        var src = `http://${location.host}/${src}`
         var page = await betterFetch(src)
         document.getElementById('pageImport').innerHTML = page
     })()

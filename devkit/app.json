@@ -8,7 +8,7 @@
                 "children":[
                     {
                         "type":"importPage",
-                        "src":"https://www.bing.com"
+                        "src":"devkit/containers.html"
                     }
                 ]
             }
