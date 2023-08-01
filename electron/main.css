@@ -1,0 +1,13 @@
+.divider{
+    display: inline-block;
+    width: 100%;
+    max-width: 100%;
+    border-top: 1px solid #e5e5e5;
+    vertical-align: top;
+    margin-top: 7%;
+}
+.dropDownTxt{
+    margin: 1px;
+    margin-left: 3%;
+    margin-top: 3%;
+}

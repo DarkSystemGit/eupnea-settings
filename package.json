@@ -2,9 +2,10 @@
   "name": "eupnea-settings",
   "version": "1.0.0",
   "description": "Settings for Eupnea OS",
-  "main": "main.js",
+  "main": "electron/main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ."
   },
   "repository": {
     "type": "git",
@@ -22,7 +23,11 @@
   "homepage": "https://github.com/darksystemgit/eupneaSettings",
   "dependencies": {
     "distrobox-node": "^1.2.1",
+    "electron-fetch": "^1.9.1",
     "jsdom": "^22.1.0",
     "xml2js": "^0.6.0"
+  },
+  "devDependencies": {
+    "electron": "^25.3.2"
   }
 }
