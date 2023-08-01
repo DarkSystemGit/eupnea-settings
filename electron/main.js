@@ -1,7 +1,7 @@
 // main.js
 
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, ipcMain } = require('electron')
+const { app, BrowserWindow, ipcMain, dialog } = require('electron')
 const path = require('path')
 const fs = require('fs')
 const distrobox = require('distrobox-node')
@@ -15,6 +15,24 @@ const createWindow = () => {
       
     }
   })
+  const dialog = async(title,buttons,message,detail)=>{
+    return new Promise((resolve)=>{
+        const options = {
+            type: 'question',
+            buttons,
+            defaultId: 2,
+            title,
+            message,
+            detail
+            
+          };
+        
+          dialog.showMessageBox(null, options, (response) => {
+            resolve(response)
+          });
+    })
+    
+  }
   ipcMain.on('fsRead', (event, file) => {
     const webContents = event.sender
     event.returnValue = fs.readFileSync(path.join(__dirname,file)).toString()
@@ -38,6 +56,10 @@ const createWindow = () => {
   ipcMain.on('distroboxImages', async (event) => {
     const webContents = event.sender
     event.returnValue = JSON.stringify(await distrobox.getImages())
+  })
+  ipcMain.on('dialog', async (event,title,buttons,message,detail) => {
+    const webContents = event.sender
+    event.returnValue = await dialog(title,buttons,message,detail)
   })
   // and load the index.html of the app.
   mainWindow.loadFile('./electron/index.html')

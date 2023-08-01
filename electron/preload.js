@@ -12,3 +12,6 @@ contextBridge.exposeInMainWorld('distrobox',{
         return ipcRenderer.sendSync('distroboxImages')
     }
 })
+contextBridge.exposeInMainWorld('dialogBox',(title,buttons,message,detail)=>{
+    return ipcRenderer.sendSync('dialog',title,buttons,message,detail)
+})

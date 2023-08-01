@@ -35,7 +35,17 @@ containers.forEach((container) => {
     </tr>`
     container.name = container.name.charAt(0).toLowerCase() + container.name.slice(1)
     document.getElementById('containerList').innerHTML = `${document.getElementById('containerList').innerHTML}${containerString}`
+    function dialog(name,message,detail){
+        var buttons =['Okay','Cancel']
+        return dialogBox(name,buttons,message,detail)
+    }
     document.getElementById(`${container.name.charAt(0).toLowerCase() + container.name.slice(1)}More`).addEventListener('click', () => { UIkit.dropdown(document.getElementById(`${container.name.charAt(0).toLowerCase() + container.name.slice(1)}MoreDropdown`)) })
-    document.getElementById(`${container.name.charAt(0).toLowerCase()+container.name.slice(1)}Remove`).addEventListener('click',()=>{})
-    document.getElementById(`${container.name.charAt(0).toLowerCase()+container.name.slice(1)}Stop`).addEventListener('click',()=>{})
+    console.log(`${container.name.charAt(0).toLowerCase()+container.name.slice(1)}Remove`)
+    
+    document.getElementById(`${container.name.charAt(0).toLowerCase()+container.name.slice(1)}Remove`).addEventListener('click',()=>{
+        dialog('Settings','Are you sure you want to remove this container?')
+    })
+    document.getElementById(`${container.name.charAt(0).toLowerCase()+container.name.slice(1)}Stop`).addEventListener('click',()=>{
+
+    })
 })
