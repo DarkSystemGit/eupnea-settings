@@ -10,6 +10,12 @@ contextBridge.exposeInMainWorld('distrobox',{
     },
     images:()=>{
         return ipcRenderer.sendSync('distroboxImages')
+    },
+    remove:(name)=>{
+        return ipcRenderer.sendSync('distroboxRemove',name)
+    },
+    stop:(name)=>{
+        return ipcRenderer.sendSync('distroboxStop',name)
     }
 })
 contextBridge.exposeInMainWorld('dialogBox',(title,buttons,message,detail)=>{

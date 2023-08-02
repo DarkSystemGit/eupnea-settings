@@ -19,15 +19,15 @@ containers.forEach((container) => {
     <td><span id="${container.name.charAt(0).toLowerCase() + container.name.slice(1)}More" uk-icon="more-vertical" style="margin-left:90%;height:100%;width:100%;margin-top:6%;"></span></td>
     <div uk-dropdown="mode: click; pos:bottom-right" id="${container.name.charAt(0).toLowerCase() + container.name.slice(1)}MoreDropdown">
     <div id="${container.name.charAt(0).toLowerCase() + container.name.slice(1)}Stop">
-        <div style="color:red;display:flex;"><span class="material-symbols-outlined">
+        <div style="color:red;display:flex;"><span class="material-symbols-outlined" id="${container.name.charAt(0).toLowerCase() + container.name.slice(1)}StopIcon">
         cancel
-        </span></span><p class="dropDownTxt">Stop</p></div>
+        </span></span><p class="dropDownTxt" id="${container.name.charAt(0).toLowerCase() + container.name.slice(1)}StopTxt">Stop</p></div>
     </div>
     <div class="divider"></div>
     <div id="${container.name.charAt(0).toLowerCase() + container.name.slice(1)}Remove">
-        <div style="color:red;display:flex;"><span class="material-symbols-outlined" style="margin-top:0.5vh;">
+        <div style="color:red;display:flex;"><span class="material-symbols-outlined" style="margin-top:0.5vh;" id="${container.name.charAt(0).toLowerCase() + container.name.slice(1)}RemoveIcon">
         remove
-        </span><p class="dropDownTxt">Remove</p></div>
+        </span><p class="dropDownTxt" id="${container.name.charAt(0).toLowerCase() + container.name.slice(1)}RemoveTxt">Remove</p></div>
     </div>
     
     
@@ -41,11 +41,16 @@ containers.forEach((container) => {
     }
     document.getElementById(`${container.name.charAt(0).toLowerCase() + container.name.slice(1)}More`).addEventListener('click', () => { UIkit.dropdown(document.getElementById(`${container.name.charAt(0).toLowerCase() + container.name.slice(1)}MoreDropdown`)) })
     console.log(`${container.name.charAt(0).toLowerCase()+container.name.slice(1)}Remove`)
-    
-    document.getElementById(`${container.name.charAt(0).toLowerCase()+container.name.slice(1)}Remove`).addEventListener('click',()=>{
-        dialog('Settings','Are you sure you want to remove this container?')
-    })
-    document.getElementById(`${container.name.charAt(0).toLowerCase()+container.name.slice(1)}Stop`).addEventListener('click',()=>{
+    function assignDistroboxEvent(type,child){
+        document.getElementById(`${container.name.charAt(0).toLowerCase()+container.name.slice(1)}${type}${child}`).addEventListener('click',()=>{
+            if(dialog('Settings',`Are you sure you want to ${type} this container?`)==0){
+                distrobox[type](container.name)
+            }
+        })
+    } 
+    assignDistroboxEvent('Remove','Txt')
+    assignDistroboxEvent('Remove','Icon')
+    assignDistroboxEvent('Stop','Txt')
+    assignDistroboxEvent('Stop','Icon')
 
-    })
 })

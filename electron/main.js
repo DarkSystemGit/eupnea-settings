@@ -15,7 +15,7 @@ const createWindow = () => {
       
     }
   })
-  const dialog = async(title,buttons,message,detail)=>{
+  const dialogBox = async(title,buttons,message,detail)=>{
     return new Promise((resolve)=>{
         const options = {
             type: 'question',
@@ -27,9 +27,7 @@ const createWindow = () => {
             
           };
         
-          dialog.showMessageBox(null, options, (response) => {
-            resolve(response)
-          });
+          resolve(dialog.showMessageBoxSync(null, options));
     })
     
   }
@@ -57,9 +55,28 @@ const createWindow = () => {
     const webContents = event.sender
     event.returnValue = JSON.stringify(await distrobox.getImages())
   })
+  ipcMain.on('distroboxEnter', async (event,name) => {
+    const webContents = event.sender
+    async function runComm(comm) {
+      return new Promise((resolve, reject) => {
+          child_process.exec(comm, (error, stdout, stderr) => {
+              if (error) {
+                  reject(`error: ${error.message}`);
+                  return;
+              }
+              if (stderr) {
+                  resolve(`${stderr}`);
+                  return;
+              }
+              resolve(stdout)
+          });
+      })
+  }
+    event.returnValue = await runComm(`x-terminal-emulator -e distrobox-enter --root --name ${name}`)
+  })
   ipcMain.on('dialog', async (event,title,buttons,message,detail) => {
     const webContents = event.sender
-    event.returnValue = await dialog(title,buttons,message,detail)
+    event.returnValue = await dialogBox(title,buttons,message,detail)
   })
   // and load the index.html of the app.
   mainWindow.loadFile('./electron/index.html')
