@@ -4,15 +4,43 @@
 <head></head>
 
 <body>
-    <link rel="stylesheet" href="./main.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    
     <h2 style="font-weight:500;color:#3b3b3b;margin:0;">Containers</h2>
     <table class="uk-table uk-table-divider" style="width:90%;">
         <tbody id="containerList">
-            
-            
+
+
         </tbody>
     </table>
+    <div class="createContainer">
+        <button class="mdc-fab" style="background-color: rgb(0, 140, 255);">
+            <div class="mdc-fab__ripple"></div>
+            <span class="mdc-fab__icon material-icons">add</span>
+          </button>
+    </div>
+    
+
+
+<div id="createContainerModal" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body">
+        <div class="uk-modal-header"> <h2 class="uk-modal-title uk-text-left">Create New Container</h2></div>
+        
+        <form class="uk-modal-body">
+            <h3>Name</h3>
+            <input type="text" placeholder="Name" class="uk-input" id="containerName">
+            <h3>OS</h3>
+            <select name="OS" id="osChoser" class="uk-select">
+                
+                
+            </select>
+            
+        </form>
+        <p class="uk-text-right uk-modal-footer">
+            <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
+            <button class="uk-button uk-button-primary" type="button" id="createSubmit">Create</button>
+        </p>
+    </div>
+</div>
 </body>
 
 </html>

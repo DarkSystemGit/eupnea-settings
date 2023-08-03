@@ -16,6 +16,9 @@ contextBridge.exposeInMainWorld('distrobox',{
     },
     stop:(name)=>{
         return ipcRenderer.sendSync('distroboxStop',name)
+    },
+    create:(name,os)=>{
+        return ipcRenderer.sendSync('distroboxCreate',os,name)
     }
 })
 contextBridge.exposeInMainWorld('dialogBox',(title,buttons,message,detail)=>{
