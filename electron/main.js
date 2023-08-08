@@ -5,6 +5,7 @@ const { app, BrowserWindow, ipcMain, dialog } = require('electron')
 const path = require('path')
 const fs = require('fs')
 const distrobox = require('distrobox-node')
+const child_process = require("child_process");
 const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
@@ -72,7 +73,7 @@ const createWindow = () => {
           });
       })
   }
-    event.returnValue = await runComm(`x-terminal-emulator -e distrobox-enter --root --name ${name}`)
+    event.returnValue = await runComm(`x-terminal-emulator -e "distrobox-enter --root --name ${name}"`)
   })
   ipcMain.on('dialog', async (event,title,buttons,message,detail) => {
     const webContents = event.sender

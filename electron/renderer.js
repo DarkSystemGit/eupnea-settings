@@ -1,4 +1,36 @@
 document.getElementById('pageImport').innerHTML = window.fs.read('containers.html')
+function assignEventListeners(containers) {
+    containers.forEach((container) => {
+        function dialog(name, message, detail) {
+            var buttons = ['Okay', 'Cancel']
+            return dialogBox(name, buttons, message, detail)
+        }
+        function assignDistroboxEvent(type, child) {
+            console.log(document.getElementById(`${container.name.charAt(0).toLowerCase() + container.name.slice(1)}${type}${child}`))
+
+            document.getElementById(`${container.name.charAt(0).toLowerCase() + container.name.slice(1)}${type}${child}`).onclick = () => {
+
+                if (dialog('Settings', `Are you sure you want to ${type.charAt(0).toLowerCase() + type.slice(1)} this container?`) == 0) {
+
+                    distrobox[type.charAt(0).toLowerCase() + type.slice(1)](container.name)
+                    assignEventListeners(genContainerList())
+                }
+            }
+
+
+        }
+        assignDistroboxEvent('Remove', 'Txt')
+        assignDistroboxEvent('Remove', 'Icon')
+        assignDistroboxEvent('Stop', 'Txt')
+        assignDistroboxEvent('Stop', 'Icon')
+        let startHandler = () => {
+            console.log('start')
+            distrobox.enter(container.name)
+        }
+        document.getElementById(`${container.name.charAt(0).toLowerCase() + container.name.slice(1)}StartTxt`).onclick = startHandler
+        document.getElementById(`${container.name.charAt(0).toLowerCase() + container.name.slice(1)}StartIcon`).onclick = startHandler
+    })
+}
 function genContainerList() {
     document.getElementById('containerList').innerHTML = ""
     var images = JSON.parse(distrobox.images())
@@ -21,6 +53,17 @@ function genContainerList() {
     <td><p style="font-size: larger;padding-top:2.5%">${container.name}</p></td>
     <td><span id="${container.name.charAt(0).toLowerCase() + container.name.slice(1)}More" uk-icon="more-vertical" style="margin-left:90%;height:100%;width:100%;margin-top:6%;"></span></td>
     <div uk-dropdown="mode: click; pos:bottom-right" id="${container.name.charAt(0).toLowerCase() + container.name.slice(1)}MoreDropdown">
+    <div id="${container.name.charAt(0).toLowerCase() + container.name.slice(1)}Start">
+    <div style="display: flex;color: green;">
+    <span class="material-symbols-outlined" id="${container.name.charAt(0).toLowerCase() + container.name.slice(1)}StartIcon">terminal
+    </span>
+    <p class="dropDownTxt" id="${container.name.charAt(0).toLowerCase() + container.name.slice(1)}StartTxt">Start</p>
+</div>
+</div>
+    <div class="divider" style="
+    margin-bottom: 4%;
+    margin-top: 3%;
+    "></div>
     <div id="${container.name.charAt(0).toLowerCase() + container.name.slice(1)}Stop">
         <div style="color:red;display:flex;"><span class="material-symbols-outlined" id="${container.name.charAt(0).toLowerCase() + container.name.slice(1)}StopIcon">
         cancel
@@ -38,63 +81,44 @@ function genContainerList() {
     </tr>`
         container.name = container.name.charAt(0).toLowerCase() + container.name.slice(1)
         document.getElementById('containerList').innerHTML = `${document.getElementById('containerList').innerHTML}${containerString}`
-        function dialog(name, message, detail) {
-            var buttons = ['Okay', 'Cancel']
-            return dialogBox(name, buttons, message, detail)
-        }
+
         document.getElementById(`${container.name.charAt(0).toLowerCase() + container.name.slice(1)}More`).addEventListener('click', () => { UIkit.dropdown(document.getElementById(`${container.name.charAt(0).toLowerCase() + container.name.slice(1)}MoreDropdown`)) })
         console.log(`${container.name.charAt(0).toLowerCase() + container.name.slice(1)}Remove`)
-        function assignDistroboxEvent(type, child) {
-            console.log(document.getElementById(`${container.name.charAt(0).toLowerCase() + container.name.slice(1)}${type}${child}`))
-            window.addEventListener('DOMContentLoaded', () => {
-                document.getElementById(`${container.name.charAt(0).toLowerCase() + container.name.slice(1)}${type}${child}`).onclick = () => {
 
-                    if (dialog('Settings', `Are you sure you want to ${type.charAt(0).toLowerCase() + type.slice(1)} this container?`) == 0) {
-                        
-                        distrobox[type.charAt(0).toLowerCase() + type.slice(1)](container.name)
-                        genContainerList()
-                    }
-                }
-            })
-
-        }
-        assignDistroboxEvent('Remove', 'Txt')
-        assignDistroboxEvent('Remove', 'Icon')
-        assignDistroboxEvent('Stop', 'Txt')
-        assignDistroboxEvent('Stop', 'Icon')
 
     })
+    return containers
 }
-function floatingBotton(elm,click){
+function floatingBotton(elm, click) {
     //var btn = new MDCRipple(elm);
-    elm.addEventListener('click',click)
+    elm.addEventListener('click', click)
 }
-function generateOSList(){
+function generateOSList() {
     var images = Object.keys(JSON.parse(distrobox.images()))
-    images.forEach((image)=>{
-        
+    images.forEach((image) => {
+
         var option = document.createElement('option')
         option.value = image
-        option.innerText = `${image.charAt(0).toUpperCase()}${image.slice(1)}`.replace('linux',' Linux').replace('Linux',' Linux').replace('os',' OS')
-        if(image == "opensuse"){
-            option.innerText="Open Suse"
+        option.innerText = `${image.charAt(0).toUpperCase()}${image.slice(1)}`.replace('linux', ' Linux').replace('Linux', ' Linux').replace('os', ' OS')
+        if (image == "opensuse") {
+            option.innerText = "Open Suse"
         }
-        if(image == "centosstream"){
-            option.innerText="Cent OS Stream"
+        if (image == "centosstream") {
+            option.innerText = "Cent OS Stream"
         }
         document.getElementById('osChoser').appendChild(option)
     })
-    
+
 }
 window.addEventListener('DOMContentLoaded', () => {
-    genContainerList()
+    assignEventListeners(genContainerList())
     generateOSList()
-    floatingBotton(document.getElementsByClassName('mdc-fab')[0],()=>{
+    floatingBotton(document.getElementsByClassName('mdc-fab')[0], () => {
         UIkit.modal(document.getElementById('createContainerModal')).show()
     })
-    document.getElementById('createSubmit').addEventListener('click',()=>{
-        distrobox.create(document.getElementById('containerName').value,document.getElementById('osChoser').value)
-        genContainerList()
+    document.getElementById('createSubmit').addEventListener('click', () => {
+        distrobox.create(document.getElementById('containerName').value, document.getElementById('osChoser').value)
+        assignEventListeners(genContainerList())
         UIkit.modal(document.getElementById('createContainerModal')).hide()
     })
 })
